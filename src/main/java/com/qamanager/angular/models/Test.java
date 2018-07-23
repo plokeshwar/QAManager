@@ -1,12 +1,8 @@
-package com.qamanager.models;
+package com.qamanager.angular.models;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.qamanager.repositories.CaseIdStorageRepository;
 
 @EntityScan
 @Document(collection = "test")
@@ -26,7 +22,7 @@ public class Test {
 	
 	String estimate;
 
-	CaseIdStorageRepository caseIdStorageRepository;
+	CaseIdStorage caseIdStorageRepository;
 	
 	public Test() {
 	}

@@ -1,11 +1,9 @@
-package com.qamanager.repositories;
+package com.qamanager.angular.repositories;
 
 
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.qamanager.models.CaseIdStorage;
-import com.qamanager.models.Test;
+import com.qamanager.angular.models.CaseIdStorage;
 
 public interface CaseIdStorageRepository extends CrudRepository<CaseIdStorage, String> {
 

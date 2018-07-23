@@ -1,4 +1,4 @@
-package com.qamanager.utilities;
+package com.qamanager.angular.utilities;
 
 import java.io.File;
 import java.io.FileInputStream;

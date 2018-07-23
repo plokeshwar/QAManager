@@ -1,9 +1,5 @@
-package com.qamanager.controllers;
+package com.qamanager.angular.controllers;
 
-
-import com.qamanager.models.Suite;
-import com.qamanager.repositories.ProjectRepository;
-import com.qamanager.repositories.SuiteRepository;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,8 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.qamanager.angular.models.Suite;
+import com.qamanager.angular.repositories.ProjectRepository;
+import com.qamanager.angular.repositories.SuiteRepository;
 
 @RestController
 public class SuiteController {

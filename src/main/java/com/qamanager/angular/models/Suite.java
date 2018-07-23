@@ -1,4 +1,4 @@
-package com.qamanager.models;
+package com.qamanager.angular.models;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

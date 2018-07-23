@@ -1,17 +1,13 @@
-package com.qamanager.controllers;
+package com.qamanager.angular.controllers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.validation.Valid;
 
-import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qamanager.models.CaseIdStorage;
-import com.qamanager.models.Suite;
-import com.qamanager.models.Test;
-import com.qamanager.repositories.CaseIdStorageRepository;
-import com.qamanager.repositories.SuiteRepository;
-import com.qamanager.repositories.TestRepository;
-import com.qamanager.utilities.PropertiesLoader;
+import com.qamanager.angular.models.CaseIdStorage;
+import com.qamanager.angular.models.Test;
+import com.qamanager.angular.repositories.CaseIdStorageRepository;
+import com.qamanager.angular.repositories.SuiteRepository;
+import com.qamanager.angular.repositories.TestRepository;
+import com.qamanager.angular.utilities.PropertiesLoader;
 
 @RestController
 public class TestController {
