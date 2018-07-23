@@ -1,4 +1,4 @@
-package com.qamanager.angular.models;
+package com.qamanager.models;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.qamanager.angular.repositories.CaseIdStorageRepository;
+import com.qamanager.repositories.CaseIdStorageRepository;
 
 @EntityScan
 @Document(collection = "test")

@@ -1,7 +1,7 @@
-package com.qamanager.angular.controllers;
+package com.qamanager.controllers;
 
-import com.qamanager.angular.models.Project;
-import com.qamanager.angular.repositories.ProjectRepository;
+import com.qamanager.models.Project;
+import com.qamanager.repositories.ProjectRepository;
 
 import javax.validation.Valid;
 

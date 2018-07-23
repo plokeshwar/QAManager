@@ -1,9 +1,10 @@
-package com.qamanager.angular.repositories;
+package com.qamanager.repositories;
 
 
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import com.qamanager.angular.models.Suite;
+
+import com.qamanager.models.Suite;
 
 public interface SuiteRepository extends CrudRepository<Suite, String> {
 

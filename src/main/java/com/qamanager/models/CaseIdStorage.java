@@ -1,4 +1,4 @@
-package com.qamanager.angular.models;
+package com.qamanager.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

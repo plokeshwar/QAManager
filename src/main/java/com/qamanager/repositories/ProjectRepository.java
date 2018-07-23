@@ -1,7 +1,8 @@
-package com.qamanager.angular.repositories;
+package com.qamanager.repositories;
 
 import org.springframework.data.repository.CrudRepository;
-import com.qamanager.angular.models.Project;
+
+import com.qamanager.models.Project;
 
 public interface ProjectRepository extends CrudRepository<Project, String> {
 

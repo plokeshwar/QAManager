@@ -1,9 +1,9 @@
-package com.qamanager.angular.controllers;
+package com.qamanager.controllers;
 
 
-import com.qamanager.angular.models.Suite;
-import com.qamanager.angular.repositories.ProjectRepository;
-import com.qamanager.angular.repositories.SuiteRepository;
+import com.qamanager.models.Suite;
+import com.qamanager.repositories.ProjectRepository;
+import com.qamanager.repositories.SuiteRepository;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

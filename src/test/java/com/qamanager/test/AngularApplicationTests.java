@@ -1,4 +1,4 @@
-package com.qamanager.angular;
+package com.qamanager.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

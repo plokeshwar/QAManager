@@ -1,4 +1,4 @@
-package com.qamanager.angular.controllers;
+package com.qamanager.controllers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qamanager.angular.models.CaseIdStorage;
-import com.qamanager.angular.models.Suite;
-import com.qamanager.angular.models.Test;
-import com.qamanager.angular.repositories.CaseIdStorageRepository;
-import com.qamanager.angular.repositories.SuiteRepository;
-import com.qamanager.angular.repositories.TestRepository;
+import com.qamanager.models.CaseIdStorage;
+import com.qamanager.models.Suite;
+import com.qamanager.models.Test;
+import com.qamanager.repositories.CaseIdStorageRepository;
+import com.qamanager.repositories.SuiteRepository;
+import com.qamanager.repositories.TestRepository;
 import com.qamanager.utilities.PropertiesLoader;
 
 @RestController
