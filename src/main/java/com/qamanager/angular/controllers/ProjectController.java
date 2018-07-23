@@ -3,6 +3,8 @@ package com.qamanager.angular.controllers;
 import com.qamanager.angular.models.Project;
 import com.qamanager.angular.repositories.ProjectRepository;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +24,7 @@ public class ProjectController {
     }
 
     @RequestMapping(method=RequestMethod.POST, value="/projects")
-    public Project save(@RequestBody Project project) {
+    public Project save(@Valid @RequestBody Project project) {
         projectRepository.save(project);
 
         return project;
@@ -34,7 +36,7 @@ public class ProjectController {
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/projects/{id}")
-    public Project update(@PathVariable String id, @RequestBody Project project) {
+    public Project update(@PathVariable String id, @Valid @RequestBody Project project) {
     	Project p = projectRepository.findOne(id);
         if(project.getName() != null)
             p.setName(project.getName());

@@ -8,6 +8,8 @@ import com.qamanager.angular.repositories.SuiteRepository;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +41,7 @@ public class SuiteController {
     }
 
     @RequestMapping(method=RequestMethod.POST, value="/projects/{projectId}/suites")
-    public ResponseEntity save(@RequestBody Suite suite, @PathVariable String projectId) {
+    public ResponseEntity save(@Valid @RequestBody Suite suite, @PathVariable String projectId) {
         
     	if(projectRepository.findOne(projectId)==null) {
     		return errorProjectNotFound(projectId);
@@ -59,7 +61,7 @@ public class SuiteController {
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/projects/{projectId}/suites/{id}")
-    public ResponseEntity update(@PathVariable String projectId, @PathVariable String id, @RequestBody Suite suite) {
+    public ResponseEntity update(@PathVariable String projectId, @PathVariable String id, @Valid @RequestBody Suite suite) {
     	if(projectRepository.findOne(projectId)==null) {
     		return errorProjectNotFound(projectId);
     	}

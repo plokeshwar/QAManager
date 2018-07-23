@@ -1,5 +1,8 @@
 package com.qamanager.angular.models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,7 +11,12 @@ public class Project {
 	
 	@Id
     String id;
+	
+	@NotNull
+	@Size(min=5,max=30, message="Project name should be minimum 5 and max 30 characters long.")
 	String name;
+	
+	@Size(max=30, message="Project description should be max 1000 characters long.")
     String description;
 
     public Project() {

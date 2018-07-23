@@ -1,22 +1,37 @@
 package com.qamanager.angular.models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.qamanager.angular.repositories.CaseIdStorageRepository;
+
+@EntityScan
 @Document(collection = "test")
 public class Test {
 
 	String id;
+
+	@NotNull
+	//@Size(min=5,max=20, message="Summary field should be minimum 5 and maximum 20 characters long.")
 	String summary;
+	
 	String precondition;
+	
 	String status;
+	
 	String suiteId;
+	
 	String estimate;
 
+	CaseIdStorageRepository caseIdStorageRepository;
+	
 	public Test() {
 	}
 
-	public Test(String id, String summary, String precondition, String status, String suiteId, String estimate) {
-		this.id = id;
+	public Test(String summary, String precondition, String status, String suiteId, String estimate) {
 		this.summary = summary;
 		this.precondition = precondition;
 		this.status = status;
@@ -25,7 +40,7 @@ public class Test {
 	}
 
 	public String getId() {
-		return id;
+			return id;
 	}
 
 	public void setId(String id) {
