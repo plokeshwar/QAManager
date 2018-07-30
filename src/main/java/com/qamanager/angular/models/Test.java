@@ -1,6 +1,5 @@
 package com.qamanager.angular.models;
 
-import javax.validation.constraints.NotNull;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,8 +9,6 @@ public class Test {
 
 	String id;
 
-	@NotNull
-	//@Size(min=5,max=20, message="Summary field should be minimum 5 and maximum 20 characters long.")
 	String summary;
 	
 	String precondition;
@@ -22,7 +19,6 @@ public class Test {
 	
 	String estimate;
 
-	CaseIdStorage caseIdStorageRepository;
 	
 	public Test() {
 	}
