@@ -1,9 +1,6 @@
 package com.qamanager.angular.controllers;
 
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qamanager.angular.models.Suite;
 import com.qamanager.angular.repositories.ProjectRepository;
 import com.qamanager.angular.repositories.SuiteRepository;
+import com.qamanager.angular.utilities.ApiError;
 
+@RequestMapping("/api/v1")
 @RestController
 public class SuiteController {
 
@@ -28,11 +27,11 @@ public class SuiteController {
     @Autowired
     ProjectRepository projectRepository;
 
-    @SuppressWarnings("unchecked")
+    
 	@RequestMapping(method=RequestMethod.GET, value="/projects/{projectId}/suites")
     public ResponseEntity suite(@PathVariable String projectId) {
     	if(projectRepository.findOne(projectId)==null) {
-    		return errorProjectNotFound(projectId);
+    		return ApiError.errorNotFound(projectId);
     	}
     	
     	Iterable<Suite> suites = suiteRepository.findByProjectIdQuery(projectId);
@@ -42,9 +41,10 @@ public class SuiteController {
     @RequestMapping(method=RequestMethod.POST, value="/projects/{projectId}/suites")
     public ResponseEntity save(@Valid @RequestBody Suite suite, @PathVariable String projectId) {
         
-    	if(projectRepository.findOne(projectId)==null) {
-    		return errorProjectNotFound(projectId);
-    	}
+    	if(projectRepository.findOne(projectId)==null)
+    		return ApiError.errorNotFound(projectId);
+    	if(suiteRepository.findByName(suite.getName())!=null)
+    		return ApiError.errorDuplicate(suite.getName()+" suite already exists.");
     	
     	suite.setProjectId(projectId);
     	suiteRepository.save(suite);
@@ -53,17 +53,16 @@ public class SuiteController {
 
     @RequestMapping(method=RequestMethod.GET, value="/projects/{projectId}/suites/{id}")
     public ResponseEntity show(@PathVariable String projectId, @PathVariable String id) {
-    	if(projectRepository.findOne(projectId)==null) {
-    		return errorProjectNotFound(projectId);
-    	}
+    	if(projectRepository.findOne(projectId)==null) 
+    		return ApiError.errorNotFound(projectId);
+    	
     	return new ResponseEntity(suiteRepository.findOne(id), HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/projects/{projectId}/suites/{id}")
     public ResponseEntity update(@PathVariable String projectId, @PathVariable String id, @Valid @RequestBody Suite suite) {
-    	if(projectRepository.findOne(projectId)==null) {
-    		return errorProjectNotFound(projectId);
-    	}
+    	if(projectRepository.findOne(projectId)==null) 
+    		return ApiError.errorNotFound(projectId);
     	
     	Suite p = suiteRepository.findOne(id);
         if(suite.getName() != null)
@@ -79,7 +78,7 @@ public class SuiteController {
     @RequestMapping(method=RequestMethod.DELETE, value="/projects/{projectId}/suites/{id}")
     public ResponseEntity delete(@PathVariable String projectId, @PathVariable String id) {
     	if(projectRepository.findOne(projectId)==null) {
-    		return errorProjectNotFound(projectId);
+    		return ApiError.errorNotFound(projectId);
     	}
     	
         Suite suite = suiteRepository.findOne(id);
@@ -88,11 +87,4 @@ public class SuiteController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
     
-    
-    private ResponseEntity errorProjectNotFound(String projectId) {
-    		Map<String, Object> map = new LinkedHashMap<>();
-    		map.put("errorCode", HttpStatus.NOT_FOUND.toString());
-    		map.put("errorMessage", "No project found with id "+projectId);
-    		return new ResponseEntity(map, HttpStatus.NOT_FOUND);
-    }
 }

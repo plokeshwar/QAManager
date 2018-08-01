@@ -1,5 +1,7 @@
 package com.qamanager.angular.models;
 
+import java.util.ArrayList;
+
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,19 +9,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "run")
 public class Run {
 	
-	final String appender = "R";
 
 	String id;
 	String suiteId;
 	String name;
 	String description;
 	Boolean includeAll;
-	String [] caseArrays;
+	ArrayList<String> caseArrays;
 			
 	public Run() {
 	}
 
-	public Run(String suiteId, String name, String description, Boolean includeAll, String [] caseArrays) {
+	public Run(String suiteId, String name, String description, Boolean includeAll, ArrayList<String> caseArrays) {
 		this.suiteId = suiteId;
 		this.name = name;
 		this.description = description;
@@ -28,7 +29,7 @@ public class Run {
 	}
 
 	public String getId() {
-		return appender+id;
+		return id;
 	}
 
 	public void setId(String id) {
@@ -67,11 +68,11 @@ public class Run {
 		this.includeAll = includeAll;
 	}
 
-	public String[] getCaseArrays() {
+	public ArrayList<String> getCaseArrays() {
 		return caseArrays;
 	}
 
-	public void setCaseArrays(String[] caseArrays) {
+	public void setCaseArrays(ArrayList<String> caseArrays) {
 		this.caseArrays = caseArrays;
 	}
 	

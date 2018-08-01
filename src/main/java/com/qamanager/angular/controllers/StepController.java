@@ -1,7 +1,5 @@
 package com.qamanager.angular.controllers;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qamanager.angular.models.Step;
 import com.qamanager.angular.repositories.StepRepository;
 import com.qamanager.angular.repositories.TestRepository;
+import com.qamanager.angular.utilities.ApiError;
 
+@RequestMapping("/api/v1")
 @RestController
 public class StepController {
 
@@ -30,7 +30,7 @@ public class StepController {
 	public ResponseEntity getSteps(@PathVariable String testId) {
 
 		if (testRepository.findOne(testId) == null) {
-			return errorNotFound("Test not found with id : " + testId);
+			return ApiError.errorNotFound("Test not found with id : " + testId);
 		}
 
 		Iterable<Step> steps = stepRepository.findByTestIdQuery(testId);
@@ -42,7 +42,7 @@ public class StepController {
 	public ResponseEntity createStep(@Valid @RequestBody Step step, @PathVariable String testId) {
 
 		if (testRepository.findOne(testId) == null) {
-			return errorNotFound("Test not found with id : " + testId);
+			return ApiError.errorNotFound("Test not found with id : " + testId);
 		}
 		Iterable<Step> steps = stepRepository.findByTestIdQuery(testId);
 		long counter = steps.spliterator().getExactSizeIfKnown();
@@ -59,7 +59,7 @@ public class StepController {
 	public ResponseEntity update(@Valid @RequestBody Step step, @PathVariable String testId, @PathVariable String stepId) {
 	
 		if (testRepository.findOne(testId) == null) {
-			return errorNotFound("Test not found with id : " + testId);
+			return ApiError.errorNotFound("Test not found with id : " + testId);
 		}
 
 		Step p = stepRepository.findOne(stepId);
@@ -80,7 +80,7 @@ public class StepController {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/suites/{suiteId}/tests/{testId}")
 	public ResponseEntity delete(@PathVariable String suiteId, @PathVariable String testId) {
 		if (suiteRepository.findOne(suiteId) == null) {
-			return errorNotFound("Suite not found with id : " + suiteId);
+			return ApiError.errorNotFound("Suite not found with id : " + suiteId);
 		}
 
 		Test test = testRepository.findOne(testId);
@@ -92,30 +92,7 @@ public class StepController {
 
 	
 
-	public String getNewCaseId() {
-		String id = "";
-		CaseIdStorage caseId = new CaseIdStorage();
-		Iterable<CaseIdStorage> caseList = caseIdStorageRepository.findAll();
-		long counter = 0;
-		if (caseList.spliterator().getExactSizeIfKnown() > 0) {
-			counter = caseList.spliterator().getExactSizeIfKnown();
-			counter++;
-			id = String.valueOf(counter);
-
-		} else {
-			id = "1";
-		}
-		
-		caseId.setId(id);
-		caseIdStorageRepository.save(caseId);
-		return id;
-
-	}*/
+*/
 	
-	private ResponseEntity errorNotFound(String message) {
-		Map<String, Object> map = new LinkedHashMap<>();
-		map.put("errorCode", HttpStatus.NOT_FOUND.toString());
-		map.put("errorMessage", message);
-		return new ResponseEntity(map, HttpStatus.NOT_FOUND);
-	}
+	
 }

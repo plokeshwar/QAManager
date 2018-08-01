@@ -2,6 +2,7 @@ package com.qamanager.angular.controllers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -27,30 +28,33 @@ import com.qamanager.angular.repositories.RunIdStorageRepository;
 import com.qamanager.angular.repositories.RunRepository;
 import com.qamanager.angular.repositories.SuiteRepository;
 import com.qamanager.angular.repositories.TestRepository;
+import com.qamanager.angular.utilities.ApiError;
 import com.qamanager.angular.utilities.PropertiesLoader;
 
+@RequestMapping("/api/v1")
 @RestController
 public class RunController {
-
 
 	@Autowired
 	ProjectRepository projectRepository;
 
 	@Autowired
+	TestRepository testRepository;
+
+	@Autowired
 	RunIdStorageRepository runIdStorageRepository;
-	
+
 	@Autowired
 	RunRepository runRepository;
-	
+
 	@Autowired
 	SuiteRepository suiteRepository;
 
-
 	@RequestMapping(method = RequestMethod.GET, value = "/projects/{projectId}/run")
-	public ResponseEntity addRun(@PathVariable String projectId) {
+	public ResponseEntity getRuns(@PathVariable String projectId) {
 
 		if (projectRepository.findOne(projectId) == null) {
-			return errorNotFound("Project not found with id : " + projectId);
+			return ApiError.errorNotFound("Project not found with id : " + projectId);
 		}
 
 		Iterable<Run> runs = runRepository.findAll();
@@ -58,85 +62,69 @@ public class RunController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/projects/{projectId}/run")
-	public ResponseEntity saveRun(@Valid @RequestBody Run run, @PathVariable String projectId) throws FileNotFoundException, IOException {
-		
+	public ResponseEntity saveRun(@Valid @RequestBody Run run, @PathVariable String projectId)
+			throws FileNotFoundException, IOException {
 
-		if (projectRepository.findOne(projectId) == null) {
-			return errorNotFound("Project not found with id : " + projectId);
-		}
+		if (projectRepository.findOne(projectId) == null)
+			return ApiError.errorNotFound("Project not found with id : " + projectId);
+		if (run.getSuiteId() != null && suiteRepository.findOne(run.getSuiteId()) == null)
+			return ApiError.errorNotFound("Suite not found with id : " + run.getSuiteId());
 
-		run.setId("R"+getNewRunId());
+		if (run.getIncludeAll())
+			run.setCaseArrays(getTestList(run));
+
+		run.setId("R" + getNewRunId());
 		runRepository.save(run);
 		return new ResponseEntity(run, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/projects/{projectId}/run/{runId}")
-	public ResponseEntity updateRun(@Valid @RequestBody Run run, @PathVariable String projectId, @PathVariable String runId) throws FileNotFoundException, IOException {
-		
+	public ResponseEntity updateRun(@Valid @RequestBody Run run, @PathVariable String projectId,
+			@PathVariable String runId) throws FileNotFoundException, IOException {
 
 		if (projectRepository.findOne(projectId) == null)
-			return errorNotFound("Project not found with id : " + projectId);
-		if(run.getSuiteId()!= null && suiteRepository.findOne(run.getSuiteId())==null)
-			return errorNotFound("Suite not found with id : " + run.getSuiteId());
-		
+			return ApiError.errorNotFound("Project not found with id : " + projectId);
+		if (run.getSuiteId() != null && suiteRepository.findOne(run.getSuiteId()) == null)
+			return ApiError.errorNotFound("Suite not found with id : " + run.getSuiteId());
+
 		Run r = runRepository.findOne(runId);
-		if(run.getIncludeAll()!=null)
+		if (run.getIncludeAll() != null)
 			r.setIncludeAll(run.getIncludeAll());
-		if(run.getCaseArrays()!=null)
+		if (run.getCaseArrays() != null)
 			r.setCaseArrays(run.getCaseArrays());
-		if(run.getDescription()!=null)
+		if (run.getDescription() != null)
 			r.setDescription(run.getDescription());
-		if(run.getName()!=null)
+		if (run.getName() != null)
 			r.setName(run.getName());
-		if(run.getSuiteId()!=null)
+		if (run.getSuiteId() != null)
 			r.setSuiteId(run.getSuiteId());
-		
-		
+
 		runRepository.save(r);
 		return new ResponseEntity(r, HttpStatus.OK);
 	}
 
-	/*
-	@RequestMapping(method = RequestMethod.PUT, value = "/suites/{suiteId}/tests/{testId}")
-	public ResponseEntity update(@Valid @RequestBody Test test, @PathVariable String suiteId, @PathVariable String testId) throws FileNotFoundException, IOException {
-	
-		if (suiteRepository.findOne(suiteId) == null) {
-			return errorNotFound("Suite not found with id : " + suiteId);
-		}
+	@RequestMapping(method = RequestMethod.DELETE, value = "/projects/{projectId}/run/{runId}")
+	public ResponseEntity deleteRun(@PathVariable String projectId, @PathVariable String runId)
+			throws FileNotFoundException, IOException {
 
-		Test p = projectRepository.findOne(testId);
-        if(test.getSummary()!= null)
-            p.setSummary(test.getSummary());
-        if(test.getPrecondition()!= null)
-            p.setPrecondition(test.getPrecondition());
-        if(test.getStatus()!=null)
-        	p.setStatus(test.getStatus());
-        if(test.getEstimate()!=null)
-        	p.setEstimate(test.getEstimate());
-        
-        projectRepository.save(p);
-    	return new ResponseEntity(p, HttpStatus.OK);
-	}
-	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/suites/{suiteId}/tests/{testId}")
-	public ResponseEntity delete(@PathVariable String suiteId, @PathVariable String testId) {
-		if (suiteRepository.findOne(suiteId) == null) {
-			return errorNotFound("Suite not found with id : " + suiteId);
-		}
+		if (projectRepository.findOne(projectId) == null)
+			return ApiError.errorNotFound("Project not found with id : " + projectId);
 
-		Test test = projectRepository.findOne(testId);
-		projectRepository.delete(test);
+		Run run = runRepository.findOne(runId);
+		runRepository.delete(run);
 
 		return new ResponseEntity(HttpStatus.ACCEPTED);
 	}
+	
 
-	*/
+	public ArrayList<String> getTestList(Run run) {
+		ArrayList<String> temp = new ArrayList<String>();
+		Iterable<Test> tests = testRepository.findBySuiteIdQuery(run.getSuiteId());
+		for (Test t : tests) {
+			temp.add(t.getId());
+		}
 
-	private ResponseEntity errorNotFound(String message) {
-		Map<String, Object> map = new LinkedHashMap<>();
-		map.put("errorCode", HttpStatus.NOT_FOUND.toString());
-		map.put("errorMessage", message);
-		return new ResponseEntity(map, HttpStatus.NOT_FOUND);
+		return temp;
 	}
 
 	public String getNewRunId() {
@@ -152,7 +140,7 @@ public class RunController {
 		} else {
 			id = "1";
 		}
-		
+
 		runIdStorage.setId(id);
 		runIdStorageRepository.save(runIdStorage);
 		return id;

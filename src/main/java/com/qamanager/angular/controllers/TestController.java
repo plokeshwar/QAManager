@@ -22,8 +22,10 @@ import com.qamanager.angular.models.Test;
 import com.qamanager.angular.repositories.CaseIdStorageRepository;
 import com.qamanager.angular.repositories.SuiteRepository;
 import com.qamanager.angular.repositories.TestRepository;
+import com.qamanager.angular.utilities.ApiError;
 import com.qamanager.angular.utilities.PropertiesLoader;
 
+@RequestMapping("/api/v1")
 @RestController
 public class TestController {
 
@@ -41,7 +43,7 @@ public class TestController {
 	public ResponseEntity test(@PathVariable String suiteId) {
 
 		if (suiteRepository.findOne(suiteId) == null) {
-			return errorNotFound("Suite not found with id : " + suiteId);
+			return ApiError.errorNotFound("Suite not found with id : " + suiteId);
 		}
 
 		Iterable<Test> tests = testRepository.findBySuiteIdQuery(suiteId);
@@ -53,7 +55,7 @@ public class TestController {
 		Properties prop = PropertiesLoader.getProperties();
 
 		if (suiteRepository.findOne(suiteId) == null) {
-			return errorNotFound("Suite not found with id : " + suiteId);
+			return ApiError.errorNotFound("Suite not found with id : " + suiteId);
 		}
 
 		test.setId(prop.getProperty("testCaseStart")+"-"+getNewCaseId());
@@ -66,7 +68,7 @@ public class TestController {
 	public ResponseEntity update(@Valid @RequestBody Test test, @PathVariable String suiteId, @PathVariable String testId) throws FileNotFoundException, IOException {
 	
 		if (suiteRepository.findOne(suiteId) == null) {
-			return errorNotFound("Suite not found with id : " + suiteId);
+			return ApiError.errorNotFound("Suite not found with id : " + suiteId);
 		}
 
 		Test p = testRepository.findOne(testId);
@@ -86,7 +88,7 @@ public class TestController {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/suites/{suiteId}/tests/{testId}")
 	public ResponseEntity delete(@PathVariable String suiteId, @PathVariable String testId) {
 		if (suiteRepository.findOne(suiteId) == null) {
-			return errorNotFound("Suite not found with id : " + suiteId);
+			return ApiError.errorNotFound("Suite not found with id : " + suiteId);
 		}
 
 		Test test = testRepository.findOne(testId);
@@ -95,13 +97,6 @@ public class TestController {
 		return new ResponseEntity(HttpStatus.ACCEPTED);
 	}
 
-
-	private ResponseEntity errorNotFound(String message) {
-		Map<String, Object> map = new LinkedHashMap<>();
-		map.put("errorCode", HttpStatus.NOT_FOUND.toString());
-		map.put("errorMessage", message);
-		return new ResponseEntity(map, HttpStatus.NOT_FOUND);
-	}
 
 	public String getNewCaseId() {
 		String id = "";
