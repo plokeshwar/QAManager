@@ -9,6 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import {MatTableModule} from '@angular/material/table';
+import {CdkTableModule} from '@angular/cdk/table';
+
+
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/project-list', pathMatch: 'full' },
@@ -42,7 +46,9 @@ const appRoutes: Routes = [
     MatListModule,
     MatToolbarModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    MatTableModule,
+    CdkTableModule
   ],
   providers: [ProjectService],
   bootstrap: [AppComponent]

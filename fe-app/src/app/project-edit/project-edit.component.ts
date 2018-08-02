@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '../shared/project/project.service';
-import { NgForm } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ProjectService} from '../shared/project/project.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-project-edit',
@@ -15,8 +15,8 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
   constructor(private route: ActivatedRoute,
-              private router: Router,
-              private projectService: ProjectService) {
+    private router: Router,
+    private projectService: ProjectService) {
   }
 
   ngOnInit() {
@@ -27,7 +27,7 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
           if (project) {
             this.project = project;
             this.project.id = project.id;
-                } else {
+          } else {
             console.log(`Project with id '${id}' not found, returning to list`);
             this.gotoList();
           }
@@ -44,10 +44,21 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['/project-list']);
   }
 
+
   save(form: NgForm) {
     this.projectService.save(form).subscribe(result => {
       this.gotoList();
     }, error => console.error(error));
+  }
+
+  update(id, form: NgForm) {
+    if (id == null) {
+      this.save(form);
+    } else {
+      this.projectService.update(id, form).subscribe(result => {
+        this.gotoList();
+      }, error => console.error(error));
+    }
   }
 
   remove(id) {

@@ -54,8 +54,6 @@ public class ProjectController {
 
 		if (projectRepository.findOne(id) == null)
 			return ApiError.errorNotFound("Project not found with id " + id);
-		if (projectRepository.findByProjectByName(project.getName()) != null)
-			return ApiError.errorDuplicate(project.getName() + " project already exists.");
 
 		Project p = projectRepository.findOne(id);
 		if (project.getName() != null)

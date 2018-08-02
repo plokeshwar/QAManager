@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class ProjectService {
-  
-  public API = '//localhost:8080/api/v1/';
+
+  public API = '//localhost:8080/api/v1';
   public PROJECT_API = this.API + '/projects';
 
   constructor(private http: HttpClient) {
@@ -14,30 +14,28 @@ export class ProjectService {
   getAll(): Observable<any> {
     return this.http.get(this.PROJECT_API);
   }
-  
+
   get(id: string) {
     return this.http.get(this.PROJECT_API + '/' + id);
   }
-  
-  update(project: any): Observable<any> {
+
+
+  update(id: string, project: any): Observable<any> {
     let result: Observable<Object>;
-      result = this.http.put(project.id, project);
-     return result;
+    result = this.http.put(this.PROJECT_API + '/' +id, project);
+    return result;
   }
-  
+
+
   save(project: any): Observable<any> {
     let result: Observable<Object>;
-    if (project['href']) {
-      result = this.http.put(project.href, project);
-    } else {
-      result = this.http.post(this.PROJECT_API, project);
-    }
+    result = this.http.post(this.PROJECT_API, project);
     return result;
   }
 
   remove(id: string) {
     return this.http.delete(this.PROJECT_API + '/' + id);
   }
-  
-  
+
+
 }

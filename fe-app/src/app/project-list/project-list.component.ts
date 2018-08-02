@@ -9,7 +9,10 @@ import { ProjectService } from '../shared/project/project.service';
 })
 
 
+
+
 export class ProjectListComponent implements OnInit {
+  displayedColumns: string[] = ['position', 'name', 'description'];
   projects: Array<any>;
 
   constructor(private projectService: ProjectService) { }
@@ -19,6 +22,7 @@ export class ProjectListComponent implements OnInit {
       this.projects = data;
     });
   }
+  
 }
 
 
