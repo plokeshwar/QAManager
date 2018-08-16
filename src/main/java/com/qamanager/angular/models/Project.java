@@ -16,7 +16,7 @@ public class Project {
 	@Size(min=5,max=30, message="Project name should be minimum 5 and max 30 characters long.")
 	String name;
 	
-	@Size(max=30, message="Project description should be max 1000 characters long.")
+	@Size(max=1000, message="Project description should be max 1000 characters long.")
     String description;
 
     public Project() {

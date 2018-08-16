@@ -12,7 +12,7 @@ public class ApiError {
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("errorCode", HttpStatus.NOT_FOUND.toString());
 		map.put("errorMessage", message);
-		return new ResponseEntity(map, HttpStatus.NOT_FOUND);
+		return new ResponseEntity(map, HttpStatus.NOT_FOUND).status(HttpStatus.NOT_FOUND).body(message);
 	}
 
 	public static ResponseEntity errorDuplicate(String message) {
@@ -20,7 +20,7 @@ public class ApiError {
 
 		map.put("errorCode", HttpStatus.CONFLICT.toString());
 		map.put("errorMessage", message);
-		return new ResponseEntity(map, HttpStatus.CONFLICT);
+		return new ResponseEntity(map, HttpStatus.CONFLICT).status(HttpStatus.CONFLICT).body(message);
 	}
 
 

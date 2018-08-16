@@ -22,4 +22,10 @@ public interface SuiteRepository extends CrudRepository<Suite, String> {
 	
 	@Query("{name : ?0}")
     Iterable<Suite> findByName(String suiteName);
+	
+	@Query("{suiteName : ?0, projectId : ?1}")
+    Iterable<Suite> findByProjectIdAndSuiteName(String suiteName, String projectId);
+
+
+	
 }

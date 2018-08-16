@@ -17,7 +17,7 @@ public class Suite {
 	@Size(min=5,max=30, message="Suite name should be minimum 5 and max 30 characters long.")
 	String name;
 	
-	@Size(max=30, message="Suite description should be max 1000 characters long.")
+	@Size(max=1000, message="Suite description should be max 1000 characters long.")
 	String description;
 	
 	String projectId;
